@@ -1,30 +1,28 @@
 class Produto:
-    def __init__(self, nome, preco, quantidade, popularidade):
+    def __init__(self, nome, preco, quantidade):
         self.nome = nome
         self.preco = preco
         self.quantidade = quantidade
-        self.popularidade = popularidade
     
     def __repr__(self):
-        return f"Produto({self.nome}, R${self.preco}, {self.quantidade} unidades, Popularidade: {self.popularidade})"
+        return f"Produto({self.nome}, R${self.preco}, {self.quantidade} unidades)"
 
-def quick_sort_produtos(produtos, chave):
+def quick_sort_produtos(produtos):
     if len(produtos) <= 1:
         return produtos
 
-    pivot = getattr(produtos[len(produtos) // 2], chave)
-    left = [x for x in produtos if getattr(x, chave) < pivot]
-    middle = [x for x in produtos if getattr(x, chave) == pivot]
-    right = [x for x in produtos if getattr(x, chave) > pivot]
+    pivot = produtos[len(produtos) // 2].quantidade
+    left = [x for x in produtos if x.quantidade > pivot]
+    middle = [x for x in produtos if x.quantidade == pivot]
+    right = [x for x in produtos if x.quantidade < pivot]
 
-    return quick_sort_produtos(left, chave) + middle + quick_sort_produtos(right, chave)
+    return quick_sort_produtos(left) + middle + quick_sort_produtos(right)
 
 def adicionar_produto():
     nome = input("Digite o nome do produto: ")
     preco = float(input("Digite o preço do produto: "))
     quantidade = int(input("Digite a quantidade em estoque do produto: "))
-    popularidade = int(input("Digite a popularidade do produto: "))
-    return Produto(nome, preco, quantidade, popularidade)
+    return Produto(nome, preco, quantidade)
 
 def main():
     produtos = []
@@ -47,9 +45,8 @@ def main():
             if not produtos:
                 print("Nenhum produto cadastrado.")
             else:
-                criterio = input("Digite o critério de ordenação (preco, quantidade, popularidade): ").lower()
-                produtos_ordenados = quick_sort_produtos(produtos, criterio)
-                print(f"\nProdutos (ordenados por {criterio}):")
+                produtos_ordenados = quick_sort_produtos(produtos)
+                print("\nProdutos (ordenados por quantidade):")
                 for produto in produtos_ordenados:
                     print(produto)
         elif opcao == '3':
